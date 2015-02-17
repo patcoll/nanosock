@@ -1,0 +1,11 @@
+# compiled output
+/build
+#/dist
+/tmp
+
+# dependencies
+/node_modules
+/bower_components
+
+# mac fail
+.DS_Store
