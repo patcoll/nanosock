@@ -1,6 +1,6 @@
 Socket = require './socket'
 
-connection = Socket("ws://127.0.0.1:3333/mysock")
+connection = Socket("ws://127.0.0.1:3333/echo")
 connection.on 'open', ->
   console.log 'open'
   connection.send 'hi'
