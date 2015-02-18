@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"github.com/patcoll/mangos/protocol/req"
 	"github.com/patcoll/mangos/transport/ws"
-	"time"
 )
 
 var (
@@ -31,10 +30,6 @@ func main() {
 		log.Fatal(err)
 	}
 	log.Println("serving: ", addr)
-	go func() {
-		time.Sleep(1 * time.Second)
-		listener.Close()
-	}()
 	<-listener.Done()
 	log.Println("end.")
 }
