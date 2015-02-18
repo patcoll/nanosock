@@ -11,3 +11,4 @@
 
 # mac fail
 .DS_Store
+/www/main.js*
