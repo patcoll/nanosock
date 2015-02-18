@@ -18,5 +18,10 @@
     "imports-loader": "^0.6.3",
     "json-loader": "^0.5.1",
     "webpack": "^1.5.3"
+  },
+  "dependencies": {
+    "backbone": "^1.1.2",
+    "q": "^1.1.2",
+    "underscore": "^1.7.0"
   }
 }

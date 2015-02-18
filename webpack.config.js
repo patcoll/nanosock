@@ -66,5 +66,19 @@ module.exports = [
     plugins: plugins({
       production: true
     })
+  }),
+  extend(true, {}, common, {
+    name: 'main',
+    target: 'web',
+    debug: true,
+    devtool: 'source-map',
+    entry: path.resolve('src/main.coffee'),
+    output: {
+      path: path.resolve('www'),
+      filename: 'main.js'
+    },
+    plugins: plugins({
+      production: production
+    })
   })
 ];
