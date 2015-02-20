@@ -5,6 +5,9 @@ protocols, or SP).
 
 Depends on WebSocket support in browser.
 
+This project is currently super beta / doesn't do very much right now. Only
+really PUB/SUB is known to kind-of work.
+
 ## Include
 
 Script tag:
