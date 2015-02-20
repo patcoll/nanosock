@@ -1,1 +1,1 @@
-module.exports = "nanosock!";
+module.exports = require('./socket.coffee');

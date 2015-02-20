@@ -7,11 +7,14 @@ var dist = production ? 'dist' : 'build';
 var common = {
   output: {
     pathinfo: !production,
-    library: 'nanosock',
+    library: 'NanoSock',
     libraryTarget: 'umd'
   },
   module: {
     loaders: [
+      // force backbone to assume a node environment so it doesn't require jquery
+      { test: /backbone\.js/, loader: 'imports?define=>false' },
+      // support coffeescript
       { test: /\.coffee$/, loader: 'coffee' }
     ]
   },
@@ -73,6 +76,11 @@ module.exports = [
     debug: true,
     devtool: 'source-map',
     entry: path.resolve('src/main.coffee'),
+    resolve: {
+      alias: {
+        'nanosock': 'src/nanosock.js'
+      }
+    },
     output: {
       path: path.resolve('www'),
       filename: 'main.js'

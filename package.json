@@ -8,6 +8,7 @@
     "url": "http://github.com/patcoll/nanosock.git"
   },
   "devDependencies": {
+    "blob-util": "^1.1.1",
     "coffee-loader": "^0.7.2",
     "exports-loader": "^0.6.2",
     "expose-loader": "^0.6.0",
@@ -20,8 +21,7 @@
     "webpack": "^1.5.3"
   },
   "dependencies": {
-    "backbone": "^1.1.2",
-    "q": "^1.1.2",
+    "ampersand-events": "^1.0.1",
     "underscore": "^1.7.0"
   }
 }

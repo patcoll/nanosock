@@ -1,54 +1,70 @@
-# Q = require 'q'
 _ = require 'underscore'
-Backbone = require 'backbone'
+Events = require 'ampersand-events'
 
-Socket = (options) ->
-  unless @ instanceof Socket
-    return new Socket options
+NanoSock = (options) ->
+  unless @ instanceof NanoSock
+    return new NanoSock options
+  if arguments.length is 1 and typeof arguments[0] is 'string'
+    options = { url: options }
   @options = _.extend({}, _.result(@, 'options'), options)
   @initialize.apply(@, arguments)
 
-Socket.extend = Backbone.Model.extend
-
-_.extend(Socket.prototype, Backbone.Events,
+# Small wrapper around WebSocket to help implement nanomsg protocols (scalable
+# protocols, or SP).
+#
+# Usage:
+#
+#   sock = NanoSock({url: "ws://sp.endpoint.org:3333", protocol: "sub"})
+#
+# Listen for key events:
+#
+#   sock.on('open', function() { console.log('socket opened'); });
+#   sock.on('send', function(msg) { console.log('message sent: ', msg); });
+#   sock.on('message', function(e) { console.log('message recv: ', e.data); });
+#   sock.on('close', function() { console.log('socket closed'); });
+#
+_.extend(NanoSock.prototype, Events,
+  newSocket: ->
+    new WebSocket @options.url, "#{@options.protocol}.sp.nanomsg.org"
+  send: (msg) ->
+    @socket.send.apply(@socket, arguments)
+    @trigger 'send', msg
+  close: ->
+    @socket.close.apply(@socket, arguments)
+  options:
+    url: null
+    protocol: null
+    # TODO: add reconnect
+    reconnect: false
   initialize: (options) ->
-    if arguments.length is 1 and typeof arguments[0] is 'string'
-      options = { url: options }
-
     unless WebSocket
       throw new Error "no WebSocket! please use a browser that has WebSocket support."
 
-    @socket = new WebSocket options.url
+    unless @options.url?
+      throw new Error "no url! please provide a url."
 
-    # @deferreds = {}
+    unless @options.protocol?
+      throw new Error "no protocol! please provide a protocol."
+
+    @socket = @newSocket()
+
     _.each [
       'open'
       'close'
       'message'
       'error'
     ], (name) =>
-      # @deferreds[name] = Q.defer()
       eventName = "on#{name}"
       @socket[eventName] = =>
-        # @deferreds[name]?.resolve(arguments)
         if _.contains(['message', 'error'], name)
           @trigger name, arguments[0]
         else
           @trigger name
 
-    # @waitFor = (name) =>
-    #   @deferreds[name]?.promise
-
-    @send = (msg) =>
-      @socket.send.apply(@socket, arguments)
-      @trigger 'send', msg
-
-    @close = =>
-      @socket.close.apply(@socket, arguments)
-
     # event handlers
 
-    window && window.addEventListener 'beforeunload', => @socket.close()
+    # convenience to close socket on reload or when browsing away from page.
+    window?.addEventListener?('beforeunload', => @socket.close())
 )
 
-module.exports = Socket
+module.exports = NanoSock
