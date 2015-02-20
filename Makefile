@@ -28,8 +28,8 @@ ws: wsdeps
 	go build
 
 wsdeps:
-	go get github.com/gdamore/mangos
-	go get golang.org/x/net/websocket
+	go get -u github.com/gdamore/mangos
+	go get -u golang.org/x/net/websocket
 
 clean:
 	rm -rf build dist
