@@ -39,7 +39,7 @@ wsdeps:
 # helpers
 
 clean:
-	rm -rf build dist ./nanosock
+	rm -rf build nanosock node_modules bower_components
 
 contributors:
 	echo "Contributors to nanosock, both large and small:\n" > CONTRIBUTORS
