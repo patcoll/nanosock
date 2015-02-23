@@ -4,8 +4,6 @@ Events = require 'ampersand-events'
 NanoSock = (options) ->
   unless @ instanceof NanoSock
     return new NanoSock options
-  if arguments.length is 1 and typeof arguments[0] is 'string'
-    options = { url: options }
   @options = _.extend({}, _.result(@, 'options'), options)
   @initialize.apply(@, arguments)
 
