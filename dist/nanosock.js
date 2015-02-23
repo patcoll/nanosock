@@ -71,11 +71,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!(this instanceof NanoSock)) {
 	    return new NanoSock(options);
 	  }
-	  if (arguments.length === 1 && typeof arguments[0] === 'string') {
-	    options = {
-	      url: options
-	    };
-	  }
 	  this.options = _.extend({}, _.result(this, 'options'), options);
 	  return this.initialize.apply(this, arguments);
 	};
@@ -112,7 +107,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var eventName;
 	        eventName = "on" + name;
 	        return _this.socket[eventName] = function() {
-	          if (_.contains(['message', 'error'], name)) {
+	          if (name === 'message' || name === 'error') {
 	            return _this.trigger(name, arguments[0]);
 	          } else {
 	            return _this.trigger(name);
