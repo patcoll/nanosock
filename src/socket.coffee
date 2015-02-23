@@ -54,7 +54,7 @@ _.extend(NanoSock.prototype, Events,
     ], (name) =>
       eventName = "on#{name}"
       @socket[eventName] = =>
-        if _.contains(['message', 'error'], name)
+        if name in ['message', 'error']
           @trigger name, arguments[0]
         else
           @trigger name
