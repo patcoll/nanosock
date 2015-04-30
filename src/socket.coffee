@@ -1,5 +1,7 @@
 _ = require 'underscore'
 Events = require 'ampersand-events'
+# TODO: research ampersand-object-assign
+blobUtil = require 'blob-util'
 
 NanoSock = (options) ->
   unless @ instanceof NanoSock
@@ -24,8 +26,18 @@ NanoSock = (options) ->
 _.extend(NanoSock.prototype, Events,
   newSocket: ->
     new WebSocket @options.url, "#{@options.protocol}.sp.nanomsg.org"
+  sendBehaviors:
+    sub: ->
+      console.log 'server is sub'
+      @socket.send.apply(@socket, arguments)
+    rep: ->
+      console.log 'server is rep'
+      console.log 'send', arguments
+      @socket.send.apply(@socket, arguments)
   send: (msg) ->
-    @socket.send.apply(@socket, arguments)
+    unless @sendBehaviors[@options.protocol]?
+      throw new Error "#{@options.protocol} protocol not implemented yet"
+    @sendBehaviors[@options.protocol]?.apply(@, arguments)
     @trigger 'send', msg
   close: ->
     @socket.close.apply(@socket, arguments)
@@ -44,6 +56,7 @@ _.extend(NanoSock.prototype, Events,
     unless @options.protocol?
       throw new Error "no protocol! please provide a protocol."
 
+    @header = new Uint32Array(1)
     @socket = @newSocket()
 
     _.each [

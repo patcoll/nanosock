@@ -24,13 +24,16 @@ start:
 
 run: watch
 
+wsrun: deps
+	node server.js
+
 # golang
 
-wsrun: ws
-	exec ./nanosock
-
-ws: wsdeps
-	go build
+# wsrun: ws
+# 	exec ./nanosock
+#
+# ws: wsdeps
+# 	go build
 
 wsdeps:
 	go get -u github.com/gdamore/mangos
